@@ -7,7 +7,7 @@ const authGuard = require('../middleware/authGuard');
 
 const router = express.Router();
 
-router.use('/students', studentRoute);
+router.use('/students', authGuard, studentRoute);
 router.use('/courses', courseRoute);
 router.use('/users', userRoute);
 router.use('/auth', authRoute);

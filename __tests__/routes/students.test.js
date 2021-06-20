@@ -2,8 +2,11 @@ const supertest = require('supertest');
 const app = require('../../src/app');
 const Student = require('../../src/models/student');
 const { connectToDB, disconnectDB } = require('../../src/utils/db');
+const { generateToken } = require('../../src/utils/jwt');
 
 const request = supertest(app);
+
+const TOKEN = generateToken({ id: 'fake_id' });
 
 describe('/students', () => {
   // hooks
@@ -31,7 +34,10 @@ describe('/students', () => {
     };
 
     const createStudent = async (body) => {
-      return request.post('/api/students').send(body);
+      return request
+        .post('/api/students')
+        .send(body)
+        .set('Authorization', `Bearer ${TOKEN}`);
     };
 
     it('should return 201 if request is valid', async () => {
